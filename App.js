@@ -1,17 +1,16 @@
 import { StyleSheet, Text, View } from 'react-native'
 import { Provider } from 'react-redux'
-import store from "./store";
-import {registerRootComponent} from 'expo'
-import Navigator from './Navigator'
+import store from "./src/store";
+import Navigator from './src/Navigator'
 
 import React from 'react'
+import Feed from './src/screens/Feed';
 
-const App = () => {
+export default App = () => {
   return (
-    <Provider store={store}>
+    <Provider store={store()}>
       <Navigator/>
     </Provider>
   )
 }
-
 

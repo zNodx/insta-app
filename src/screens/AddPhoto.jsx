@@ -1,14 +1,14 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, Modal, Button, TextInput } from 'react-native';
-import { Camera, CameraType } from 'expo-camera';
+import { connect } from 'react-redux';
+import { addPost } from '../store/actions/posts';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import TypeCamera from '../components/Camera';
-export default  AppPhoto = () => {
+
+const AppPhoto = props => {
   const [photo, setPhoto] = useState(false)
   const [openCamera, setOpenCamera] = useState(false)
   const [comment, setComment] = useState("")
-  const [hasPermission, setHasPermission] = useState(null);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -24,6 +24,20 @@ export default  AppPhoto = () => {
     }
   };
 
+  const save = async() => {
+    props.onAddPost({
+       id: Math.random(),
+       nickname: props.name,
+       email: props.email,
+       image: photo,
+       comments: [{
+         nickname: props.email, comment: comment
+       }]
+    })
+    setPhoto(null)
+    setComment('')
+    props.navigation.navigate('Feed')
+  }
   return(
     <>
     { openCamera ? 
@@ -53,7 +67,7 @@ export default  AppPhoto = () => {
             style={styles.commentField}
             onChangeText={comment => setComment(comment)}
           />
-          <TouchableOpacity onPress={() => {}} style={[styles.buttonSave,{backgroundColor: "blue"}]}>
+          <TouchableOpacity onPress={save} style={[styles.buttonSave,{backgroundColor: "blue"}]}>
             <Text style={{color:'#fff'}}>
               Save
             </Text>
@@ -65,6 +79,21 @@ export default  AppPhoto = () => {
     </>
   )
 }
+
+const mapStateToProps = ({user}) => {
+  return {
+    email: user.email,
+    name: user.name
+  }
+} 
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddPost: post => dispatch(addPost(post))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AppPhoto)
 
 const styles = StyleSheet.create({
   mainContainer: {

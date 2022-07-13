@@ -1,40 +1,12 @@
 import { StyleSheet, FlatList, View, ActivityIndicator } from 'react-native'
 import { useFonts } from 'expo-font';
+import { connect } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import React, {useState, useEffect} from 'react'
 import Header from '../components/Header'
 import Post from '../components/Post'
 
-const Feed = () => {
-
-  const [posts, setPosts] = useState(
-
-    [
-      {
-        id: Math.random(),
-        nickname: 'Rafael Pereira Filho',
-        email: 'rafaelperfil@gmail.com',
-        image: require('../../assets/imgs/fence.jpg'),
-        comments: [
-          {
-            nickname: 'John Ray Sheldon',
-            comment: 'Stunning'
-          },
-          {
-            nickname: 'Ana Julia Arruda',
-            comment: 'Foto linda! Onde foi tirada?'
-          }
-        ]
-      },
-      {
-        id: Math.random(),
-        nickname: 'Francisco Pereira Filho',
-        email: 'fraperfil@gmail.com',
-        image: require('../../assets/imgs/bw.jpg'),
-        comments: []
-      }
-    ]
-  )
+const Feed = props => {
 
   let [fontsLoaded] = useFonts({
     'shelter': require('../../assets/fonts/shelter.otf')
@@ -49,7 +21,7 @@ const Feed = () => {
       <StatusBar hidden={true}/>
       <Header/>
       <FlatList
-        data={posts}
+        data={props.posts}
         keyExtractor={item => `${item.id}`}
         renderItem={
           ({item}) => <Post key={item.id} {...item}/>
@@ -59,6 +31,12 @@ const Feed = () => {
   )
 }
 
-export default Feed;
+const mapStateToProps = ({posts}) => {
+  return {
+    posts: posts.posts
+  }
+}
+
+export default connect(mapStateToProps)(Feed);
 
 const styles = StyleSheet.create({})
