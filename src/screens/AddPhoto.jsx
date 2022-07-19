@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { addPost } from '../store/actions/posts';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput,Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import TypeCamera from '../components/Camera';
 
@@ -11,11 +11,15 @@ const AppPhoto = props => {
   const [comment, setComment] = useState("")
 
   const pickImage = async () => {
+    if ( !props.name ){
+      Alert.alert('Falha',noUser)
+      return 
+    }
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [16, 9],
+      aspect: [3, 4],
       quality: 1,
     });
 
@@ -25,13 +29,17 @@ const AppPhoto = props => {
   };
 
   const save = async() => {
+    if ( !props.name ){
+      Alert.alert('Falha',noUser)
+      return 
+    }
     props.onAddPost({
        id: Math.random(),
        nickname: props.name,
        email: props.email,
-       image: photo,
+       image: {uri: photo},
        comments: [{
-         nickname: props.email, comment: comment
+         nickname: props.name, comment: comment
        }]
     })
     setPhoto(null)
@@ -53,7 +61,7 @@ const AppPhoto = props => {
             Select a Picture
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => setOpenCamera(true)} style={[styles.button,{backgroundColor: "red"}]}>
+        <TouchableOpacity disabled={props.name ? false : true} onPress={() => setOpenCamera(true)} style={[styles.button,{backgroundColor: "red"}]}>
           <Text style={{color:'#fff'}}>
             Take a Picture
           </Text>
@@ -146,20 +154,3 @@ const styles = StyleSheet.create({
     color: 'white',
   },
 });
-// {
-//   // previewVisible && 
-//   // <Modal
-//   // animationType='slide'
-//   // transparent={false}
-//   // visible={previewVisible}
-//   // >
-//   //   <View style={styles.container}>
-//   //     <Image source={{uri:photo.uri}} style={{width: '100%', height: 500}}/>
-//   //     <TouchableOpacity
-//   //     style={styles.button}
-//   //     onPress={() => setPreviewVisible(false)}>
-//   //     <Text style={[styles.text,{color: '#000'}]}> Back </Text>
-//   //   </TouchableOpacity> 
-//   //   </View>
-//   // </Modal>
-// }

@@ -10,7 +10,7 @@ const reducer = (state = initalState, action) => {
     case USER_LOGGED_IN :
       return {
         ...state,
-        name: action.user.name,
+        name: 'Temporário',
         email: action.user.email
 
       } 

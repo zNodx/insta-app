@@ -1,15 +1,25 @@
 import { StyleSheet, Text, View, TextInput, TouchableWithoutFeedback as TWF, Alert } from 'react-native'
 import {FontAwesome} from '@expo/vector-icons'
+import { connect } from 'react-redux'
+import { addComment } from '../store/actions/posts'
 import React, {useState} from 'react'
 
-const AddComment = () => {
+const AddComment = props => {
 
   const [comment, setComment] = useState("")
   const [editMode, setEditMode] = useState(false)
 
   
   const handleAddComment = () => {
-     Alert.alert('Adicionado!', comment)
+      props.onAddComment({
+        postId: props.postId,
+        comment: {
+          nickname: props.name,
+          comment: comment
+        }
+      })
+      setComment('')
+      setEditMode(false)
   }
 
   const commentArea = () => {}
@@ -47,7 +57,19 @@ const AddComment = () => {
   )
 }
 
-export default AddComment 
+const mapStateToProps = ({ user }) => {
+  return {
+    name: user.name
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAddComment: payload => dispatch(addComment(payload))
+  }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(AddComment)
 
 const styles = StyleSheet.create({
   container:{
