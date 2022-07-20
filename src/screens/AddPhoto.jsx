@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { addPost } from '../store/actions/posts';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Image, TextInput,Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import TypeCamera from '../components/Camera';
@@ -9,6 +9,14 @@ const AppPhoto = props => {
   const [photo, setPhoto] = useState(false)
   const [openCamera, setOpenCamera] = useState(false)
   const [comment, setComment] = useState("")
+
+  useEffect(() => {
+    if(props.posts.isUploading){
+      setPhoto(null)
+      setComment('')
+      props.navigation.navigate('Feed')  
+    }
+  },[props.posts.isUploading])
 
   const pickImage = async () => {
     if ( !props.name ){
@@ -42,9 +50,6 @@ const AppPhoto = props => {
          nickname: props.name, comment: comment
        }]
     })
-    setPhoto(null)
-    setComment('')
-    props.navigation.navigate('Feed')
   }
   return(
     <>
@@ -88,10 +93,11 @@ const AppPhoto = props => {
   )
 }
 
-const mapStateToProps = ({user}) => {
+const mapStateToProps = ({user, posts, isUploading }) => {
   return {
     email: user.email,
-    name: user.name
+    name: user.name,
+    posts
   }
 } 
 
