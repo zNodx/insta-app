@@ -9,6 +9,8 @@ const Profile = props => {
     props.onLogout()
      props.navigation.navigate('Auth')
   }
+ 
+
 
   const [user, setUser ]= useState({ 
     email: props.email,
@@ -19,7 +21,7 @@ const Profile = props => {
     <View style={styles.container}>
       <Gravatar options={user} style={styles.avatar}/>
       <Text style={styles.nickname}>{props.name}</Text>
-      <Text style={styles.email}>{props.email}</Text>
+      <Text style={styles.email}>{props.user.email}</Text>
       <TouchableOpacity onPress={logout} style={styles.button}>
         <Text style={styles.buttonText}>
           Sair
@@ -31,8 +33,7 @@ const Profile = props => {
 
 const mapStateToProps = ({ user }) => {
   return {
-    email: user.email,
-    name: user.name
+    user: user
   }
 }
 

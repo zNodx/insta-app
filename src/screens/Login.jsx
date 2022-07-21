@@ -1,16 +1,24 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
 import { connect } from  'react-redux'
 import { login } from '../store/actions/user'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 const Login = props => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
+  const [isLoad, setLoad] = useState(false)
   const [password, setPassword] = useState("")
 
+  useEffect(() => {
+    if(!props.isLoading && isLoad ){
+      props.navigation.navigate('Profile')
+      setLoad(false)
+    }
+  },[props.isLoading])
+
   const login = () => {
-    props.onLogin({"name":name,"email":email,"password":password})
-    props.navigation.navigate('Profile')
+    props.onLogin({ name, email, password})
+    setLoad(true)
   }
 
   return (
@@ -41,13 +49,19 @@ const Login = props => {
   )
 }
 
+const mapStateToProps = ({user}) => {
+  return {
+    isLoading: user.isLoading
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     onLogin: user => dispatch(login(user))
   }
 }
 
-export default connect(null,mapDispatchToProps)(Login)
+export default connect(mapStateToProps,mapDispatchToProps)(Login)
 
 const styles = StyleSheet.create({
   container: {

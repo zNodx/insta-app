@@ -1,6 +1,7 @@
-import { StyleSheet, FlatList, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, FlatList, View, ActivityIndicator,Alert } from 'react-native'
 import { useFonts } from 'expo-font';
 import { connect } from 'react-redux';
+import { setMessage } from '../store/actions/message';
 import { StatusBar } from 'expo-status-bar';
 import { fetchPosts } from '../store/actions/posts';
 import React, {useState, useEffect} from 'react'
@@ -8,6 +9,16 @@ import Header from '../components/Header'
 import Post from '../components/Post'
 
 const Feed = props => {
+
+  useEffect(() => {
+    console.log(props);
+    if(props.text && props.text.trim()){
+      Alert.alert(props.title || 'Mensagem', props.text)
+      props.clearMessage()
+    }
+
+  },[props.posts])
+
 
   useEffect(() => {
 
@@ -38,18 +49,22 @@ const Feed = props => {
   )
 }
 
-const mapStateToProps = ({posts}) => {
+const mapStateToProps = ({posts,message}) => {
   return {
-    posts: posts.posts
+    posts: posts.posts,
+    title: message.title,
+    text: message.text
   }
 }
 
 const mapDispatchToProps  = dispatch => {
   return {
-    onFetchPosts: () => dispatch(fetchPosts())
+    onFetchPosts: () => dispatch(fetchPosts()),
+    clearMessage: () => {
+      dispatch(setMessage({title:'', text:''}))
+    }
   }
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(Feed);
 
-const styles = StyleSheet.create({})

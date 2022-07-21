@@ -10,9 +10,6 @@ import Feed from "./screens/Feed";
 import Profile from "./screens/Profile";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
-import {registerRootComponent} from 'expo'
-import { Provider } from 'react-redux'
-import store from "./store";
 
 const authRouter = createStackNavigator({
   Login: {screen: Login, navigationOptions: {title: 'Login'}},
@@ -65,5 +62,3 @@ const MenuConfig = {
 const MenuNavigator = createBottomTabNavigator(MenuRoutes, MenuConfig)
 
 export default MenuNavigator
-
-

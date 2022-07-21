@@ -96,7 +96,7 @@ const AppPhoto = props => {
 const mapStateToProps = ({user, posts, isUploading }) => {
   return {
     email: user.email,
-    name: user.name,
+    name: user.email,
     posts
   }
 } 

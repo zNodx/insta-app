@@ -1,12 +1,15 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, TextInput,Alert } from 'react-native'
+import { connect } from 'react-redux'
+import { createUser } from '../store/actions/user'
 import React, {useState} from 'react'
 
-const Register = () => {
+const Register = props => {
   const [name, setName] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
   const login = () => {
+    Alert.alert('Usuário criado com sucesso',name)
     props.navigation.navigate('Profile')
   }
 
@@ -34,17 +37,22 @@ const Register = () => {
         value={password} 
         onChangeText={password => setPassword(password)}
       />
-      <TouchableOpacity onPress={login} style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => {}} style={styles.button}>
+      <TouchableOpacity 
+        onPress={() => [props.onCreateUser({name,email,password}),login()]} 
+        style={styles.button}>
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
     </View>
   )
 }
 
-export default Register
+const mapDispatchToProps = dispatch => {
+  return {
+    onCreateUser: user => dispatch(createUser(user))
+  }
+}
+
+export default connect(null,mapDispatchToProps)(Register)
 
 const styles = StyleSheet.create({
   container: {

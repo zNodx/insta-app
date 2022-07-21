@@ -1,16 +1,20 @@
 import { SET_POSTS, ADD_COMMENT, POST_CREATED, CREATING_POST } from "./constants";
+import { setMessage } from "./message";
 import axios from "axios";
 
 export const addPost = post => {
   return dispatch => {
   dispatch(creatingPost())
 
-
     axios.post('/posts.json', { ...post })
       .catch(err => console.log(err))
       .then(res => {
         dispatch(fetchPosts())
         dispatch(postCreated())
+        dispatch(setMessage({
+          title: 'Sucesso',
+          text: 'Nova Postagem' 
+        }))
       })
   }
 }
