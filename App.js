@@ -3,10 +3,11 @@ import { Provider } from 'react-redux'
 import store from "./src/store";
 import Navigator from './src/Navigator'
 import axios from 'axios'
+import {FIREBASE_LINK} from '@env'
 import React, {useEffect} from 'react'
 
 
-axios.defaults.baseURL = 'Seu firebase link'
+axios.defaults.baseURL = FIREBASE_LINK
 
 export default App = () => {
   return (
