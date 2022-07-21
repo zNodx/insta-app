@@ -6,7 +6,7 @@ import axios from 'axios'
 import React, {useEffect} from 'react'
 
 
-axios.defaults.baseURL = 'https://insta-14fea-default-rtdb.firebaseio.com/'
+axios.defaults.baseURL = 'Seu firebase link'
 
 export default App = () => {
   return (
