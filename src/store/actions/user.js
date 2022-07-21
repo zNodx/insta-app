@@ -2,8 +2,8 @@ import { LOADING_USER, USER_LOADED, USER_LOGGED_IN, USER_LOGGED_OUT } from "./co
 import { GOOGLE_API, API_KEY } from '@env'
 import axios from 'axios'
 
-const authBaseURL = 'GOOGLE_API'
-const API_KEY = 'API_KEY'
+const authBaseURL = GOOGLE_API
+const API_KEY = API_KEY
 
 export const userLogged = user => {
 
