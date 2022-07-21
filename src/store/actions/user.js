@@ -1,9 +1,9 @@
 import { LOADING_USER, USER_LOADED, USER_LOGGED_IN, USER_LOGGED_OUT } from "./constants";
-// import { GOOGLE_API, API_KEY } from '@env'
+import { GOOGLE_API, API_KEY } from '@env'
 import axios from 'axios'
 
-const authBaseURL = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
-const API_KEY = 'AIzaSyBkQQ1NZiHXIKmKgkFyVH29G2flZEq7Jnc'
+const authBaseURL = 'GOOGLE_API'
+const API_KEY = 'API_KEY'
 
 export const userLogged = user => {
 
